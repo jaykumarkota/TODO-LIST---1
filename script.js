@@ -22,26 +22,58 @@ const todoList = JSON.parse(localStorage.getItem('todoList')) || [];
 
 renderToDo();
 
-function renderToDo(){
-    let htmlToDo = '';
-    for(let i = 0; i<todoList.length; i++){
+// function renderToDo(){
+//     let htmlToDo = '';
+//     for(let i = 0; i<todoList.length; i++){
 
-        if(todoList[i].completed === false) {
-        htmlToDo += `<div class="todos-cont-box"><p>${todoList[i].name} - on - ${todoList[i].due}</p>`;
-        } else{
-        htmlToDo += `<div class="todos-cont-box"><p class = checked>${todoList[i].name} - on - ${todoList[i].due}</p>`;
+//         if(todoList[i].completed === false) {
+//         htmlToDo += `<div class="todos-cont-box"><p>${todoList[i].name} - on - ${todoList[i].due}</p>`;
+//         } else{
+//         htmlToDo += `<div class="todos-cont-box"><p class = checked>${todoList[i].name} - on - ${todoList[i].due}</p>`;
+//         }
+//         htmlToDo += `<button class="delete-btn" onclick="
+//         todoList.splice(${i},1);
+//         renderToDo();
+//         saveData();
+//         ">&#10006;</button></div>
+//         `;
+//     }
+//     todosContEL.innerHTML = htmlToDo;
+//     saveData();
+// }
+
+function renderToDo(){
+
+    let htmlToDo = '';
+    todoList.forEach((todo,i) => {
+
+        if (todo.completed === false) {
+        htmlToDo += `<div class="todos-cont-box"><p>${todo.name} - on - ${todo.due}</p>`;
+        } else {
+        htmlToDo += `<div class="todos-cont-box"><p class = checked>${todo.name} - on - ${todo.due}</p>`;
         }
-        htmlToDo += `<button class="delete-btn" onclick="
-        todoList.splice(${i},1);
-        renderToDo();
-        saveData();
-        ">&#10006;</button></div>
-        `;
-    }
+        htmlToDo += `<button class="delete-btn">&#10006;</button></div>`;
+    });
     todosContEL.innerHTML = htmlToDo;
     saveData();
+
+    //adding delete event after rendering the html code or delete btn
+
+    document.querySelectorAll('.delete-btn').forEach((btn,i) => {
+        btn.addEventListener('click', () => {
+            todoList.splice(i, 1);
+            renderToDo();
+            saveData();
+        });
+    });
 }
 
+
+
+document.querySelector('.add-btn')
+    .addEventListener('click', () => {
+        addToDo();
+    });
 
 function addToDo(){
     if(inputToDoEL.value){
